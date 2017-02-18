@@ -52,10 +52,9 @@ regions_roles_dic = {
 }
 
 region_predefined = args.region
-awsconfigfile = args.awsconfigfile
 maws_bash_path=os.path.dirname(os.path.abspath(__file__)) + "/maws.sh -e" 
 idpentryurl = 'https://******************/adfs/ls/IdpInitiatedSignOn.aspx?loginToRp=urn:amazon:webservices'
-filename = expanduser("~") + awsconfigfile
+filename = expanduser("~") + args.awsconfigfile
 
 ##########################################################################
 # Vars
