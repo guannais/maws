@@ -40,10 +40,10 @@ args = parser.parse_args()
 ##########################################################################
 
 alias_roles_dic = {
-'arn:aws:iam::000000000000:role/ROLENAME01' : 'ROLEALIAS01',
-'arn:aws:iam::000000000000:role/ROLENAME02' : 'ROLEALIAS02',
-'arn:aws:iam::000000000000:role/ROLENAME03' : 'ROLEALIAS03',
-'arn:aws:iam::000000000000:role/ROLENAME04' : 'ROLEALIAS04'
+'arn:aws:iam::000000000001:role/ROLENAME01' : 'ROLEALIAS01',
+'arn:aws:iam::000000000002:role/ROLENAME02' : 'ROLEALIAS02',
+'arn:aws:iam::000000000003:role/ROLENAME03' : 'ROLEALIAS03',
+'arn:aws:iam::000000000004:role/ROLENAME04' : 'ROLEALIAS04'
 }
 
 regions_roles_dic = {
@@ -79,7 +79,6 @@ def check_file_expiration_dates():
     if alias_total == 0:
         profile_expired = 1
     else:
-        alias_expired = []
         now = datetime.utcnow()
         i = 0
         while (i < alias_total) and (profile_expired == 0):
@@ -87,9 +86,6 @@ def check_file_expiration_dates():
             if expiration_date < now:
                 profile_expired = 1
             i += 1
-
-    del alias_total
-    del alias_list
 
 def username_password_login():
 
