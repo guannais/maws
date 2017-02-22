@@ -253,13 +253,14 @@ def order_roles():
         role_urn = awsrole.split(',')[1]
         for alias_roles_dic_key, alias_roles_dic_value in alias_roles_dic.items():
             if role_arn == alias_roles_dic_key:
+                role_region = region_predefined
                 for regions_roles_dic_key, regions_roles_dic_value in regions_roles_dic.items():
                     if alias_roles_dic_value == regions_roles_dic_key:
-                        region_predefined = regions_roles_dic_value
-                roles_list.append((alias_roles_dic_value, role_arn, role_urn, region_predefined))
+                        role_region = regions_roles_dic_value
+                roles_list.append((alias_roles_dic_value, role_arn, role_urn, role_region))
                 finded = 1
         if finded == 0:
-            roles_list.append(("NO_NAME_" + str(i), role_arn, role_urn, region_predefined))
+            roles_list.append(("NO_NAME_" + str(i), role_arn, role_urn, role_region))
             i += 1
 
     roles_ordered = sorted(roles_list, key=lambda x: x[0])
