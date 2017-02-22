@@ -55,7 +55,7 @@ region_predefined = args.region
 maws_bash_path = os.path.dirname(os.path.abspath(__file__)) + "/maws.sh -e"
 url_domain = '****************'
 login_domain = 'DOMAIN'
-idpentryurl = 'https://'+domain+'/adfs/ls/IdpInitiatedSignOn.aspx?loginToRp=urn:amazon:webservices'
+idpentryurl = 'https://'+url_domain+'/adfs/ls/IdpInitiatedSignOn.aspx?loginToRp=urn:amazon:webservices'
 filename = expanduser("~") + args.awsconfigfile
 
 ##########################################################################

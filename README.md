@@ -17,7 +17,7 @@ Fork from https://github.com/yulshub/yaws
 2 Configure vars:
 * alias_roles_dic
 * regions_roles_dic (if required)
-* domain
+* url_domain
 * login_domain
 
 # Run
