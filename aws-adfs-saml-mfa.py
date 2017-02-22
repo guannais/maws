@@ -53,7 +53,8 @@ regions_roles_dic = {
 
 region_predefined = args.region
 maws_bash_path = os.path.dirname(os.path.abspath(__file__)) + "/maws.sh -e"
-domain = '****************'
+url_domain = '****************'
+login_domain = 'DOMAIN'
 idpentryurl = 'https://'+domain+'/adfs/ls/IdpInitiatedSignOn.aspx?loginToRp=urn:amazon:webservices'
 filename = expanduser("~") + args.awsconfigfile
 
@@ -62,7 +63,7 @@ filename = expanduser("~") + args.awsconfigfile
 ##########################################################################
 
 def check_file_expiration_dates():
-
+    
     global profile_expired
 
     profile_expired = 0
@@ -82,8 +83,8 @@ def check_file_expiration_dates():
         now = datetime.utcnow()
         i = 0
         while (i < alias_total) and (profile_expired == 0):
-            expired_date = config.get(alias_list[i], 'expiration')
-            expiration_date = datetime.strptime(expired_date, '%Y-%m-%dT%H:%M:%SZ')
+            exp = config.get(alias_list[i], 'expiration')
+            expiration_date = datetime.strptime(exp, '%Y-%m-%dT%H:%M:%SZ')
             if expiration_date < now:
                 profile_expired = 1
             i += 1
@@ -95,8 +96,8 @@ def username_password_login():
     global username
 
     # Get the federated credentials from the user
-    username = input('Username: DOMAIN\\')
-    username = 'DOMAIN\\' + username
+    username = input('Username: '+login_domain+'\\')
+    username = login_domain+'\\' + username
     password = getpass.getpass()
 
     # Initiate session handler
@@ -237,6 +238,7 @@ def order_roles():
 
     global awsroles
     global roles_ordered
+    global region_predefined
 
     # If I have more than one role, ask the user which one they want,
     # otherwise just proceed
@@ -247,20 +249,17 @@ def order_roles():
     i = 1
     for awsrole in awsroles:
         finded = 0
+        role_arn = awsrole.split(',')[0]
+        role_urn = awsrole.split(',')[1]
         for alias_roles_dic_key, alias_roles_dic_value in alias_roles_dic.items():
-            if awsrole.split(',')[0] == alias_roles_dic_key:
-                role_predefined_region = region_predefined
+            if role_arn == alias_roles_dic_key:
                 for regions_roles_dic_key, regions_roles_dic_value in regions_roles_dic.items():
                     if alias_roles_dic_value == regions_roles_dic_key:
-                        role_predefined_region = regions_roles_dic_value
-                        split00 = awsrole.split(',')[0]
-                        split01 = awsrole.split(',')[1]
-                roles_list.append((alias_roles_dic_value, split00, split01, role_predefined_region))
+                        region_predefined = regions_roles_dic_value
+                roles_list.append((alias_roles_dic_value, role_arn, role_urn, region_predefined))
                 finded = 1
         if finded == 0:
-            split00 = awsrole.split(',')[0]
-            split01 = awsrole.split(',')[1]
-            roles_list.append(("NO_NAME_" + str(i), split00, split01, role_predefined_region))
+            roles_list.append(("NO_NAME_" + str(i), role_arn, role_urn, region_predefined))
             i += 1
 
     roles_ordered = sorted(roles_list, key=lambda x: x[0])
